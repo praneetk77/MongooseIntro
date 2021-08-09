@@ -9,7 +9,12 @@ mongoose.connect("mongodb://localhost:27017/fruitsDB", {
 //Create schema of document
 const fruitSchema = new mongoose.Schema({
   name: String,
-  score: Number,
+  //adding validation to score field
+  score: {
+    type: Number,
+    min: 1,
+    max: 10,
+  },
   review: String,
 });
 
@@ -24,7 +29,7 @@ const fruit = new Fruit({
 });
 
 //Save instance
-fruit.save();
+// fruit.save();
 
 //Same thing, different collection
 const personSchema = new mongoose.Schema({
@@ -39,10 +44,9 @@ const person = new Person({
   age: 19,
 });
 
-person.save();
+// person.save();
 
 //Adding many documents at once
-
 const kiwi = new Fruit({
   name: "Kiwi",
   score: "8",
@@ -61,35 +65,22 @@ const blueberry = new Fruit({
   review: "Very fancy.",
 });
 
-Fruit.insertMany([kiwi, banana, blueberry], function (err) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("Success");
+// Fruit.insertMany([kiwi, banana, blueberry], function (err) {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log("Success");
+//   }
+// });
+
+//Finding the database
+Fruit.find(function (err, fruits) {
+  if (err) console.log(err);
+  else {
+    fruits.forEach(function (fruit) {
+      console.log(fruit.name);
+    });
+    //Closing the connection in the last function
+    mongoose.connection.close();
   }
 });
-
-// const insertDocuments = function (db, callback) {
-//   // Get the documents collection
-//   const collection = db.collection("documents");
-//   // Insert some documents
-//   collection.insertMany([{ a: 1 }, { a: 2 }, { a: 3 }], function (err, result) {
-//     assert.equal(err, null);
-//     assert.equal(3, result.result.n);
-//     assert.equal(3, result.ops.length);
-//     console.log("Inserted 3 documents into the collection");
-//     callback(result);
-//   });
-// };
-
-// const findDocuments = function (db, callback) {
-//   // Get the documents collection
-//   const collection = db.collection("documents");
-//   // Find some documents
-//   collection.find({}).toArray(function (err, docs) {
-//     assert.equal(err, null);
-//     console.log("Found the following records");
-//     console.log(docs);
-//     callback(docs);
-//   });
-// };
