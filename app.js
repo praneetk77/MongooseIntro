@@ -8,7 +8,11 @@ mongoose.connect("mongodb://localhost:27017/fruitsDB", {
 
 //Create schema of document
 const fruitSchema = new mongoose.Schema({
-  name: String,
+  //making name field required
+  name: {
+    type: String,
+    required: [true, "Please check your entry. No name specified."],
+  },
   //adding validation to score field
   score: {
     type: Number,
@@ -80,7 +84,30 @@ Fruit.find(function (err, fruits) {
     fruits.forEach(function (fruit) {
       console.log(fruit.name);
     });
-    //Closing the connection in the last function
-    mongoose.connection.close();
   }
+});
+
+//Updating one
+// Fruit.updateOne({ name: "Apple" }, { name: "Peach" }, function (err) {
+//   if (err) console.log(err);
+//   else console.log("Successfully updated");
+// });
+
+// Updating many
+// Fruit.updateMany({ name: "Apple" }, { name: "Strawberry" }, function (err) {
+//   if (err) console.log(err);
+//   else console.log("Successfully updated");
+// });
+
+//Deleting one
+// Fruit.deleteOne({ name: "Peach" }, function (err) {
+//   if (err) console.log(err);
+//   else console.log("Successfully deleted");
+// });
+
+Person.deleteMany({ age: 19 }, function (err) {
+  if (err) console.log(err);
+  else console.log("success");
+  //Closing the connection in the last function
+  mongoose.connection.close();
 });
