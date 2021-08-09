@@ -39,6 +39,9 @@ const fruit = new Fruit({
 const personSchema = new mongoose.Schema({
   name: String,
   age: Number,
+
+  //making relations between different collections
+  favouriteFruit: fruitSchema,
 });
 
 const Person = mongoose.model("Person", personSchema);
@@ -46,8 +49,10 @@ const Person = mongoose.model("Person", personSchema);
 const person = new Person({
   name: "Praneet Karna",
   age: 19,
+  favouriteFruit: kiwi,
 });
 
+// saving person
 // person.save();
 
 //Adding many documents at once
@@ -77,7 +82,7 @@ const blueberry = new Fruit({
 //   }
 // });
 
-//Finding the database
+//Reading the database
 Fruit.find(function (err, fruits) {
   if (err) console.log(err);
   else {
@@ -105,9 +110,30 @@ Fruit.find(function (err, fruits) {
 //   else console.log("Successfully deleted");
 // });
 
-Person.deleteMany({ age: 19 }, function (err) {
-  if (err) console.log(err);
-  else console.log("success");
-  //Closing the connection in the last function
-  mongoose.connection.close();
-});
+// Deleting many
+// Person.deleteMany({ age: 19 }, function (err) {
+//   if (err) console.log(err);
+//   else console.log("success");
+// });
+
+//Challenge - Add new fruit and update praneet's fav fruit to that
+
+// const litchi = new Fruit({
+//   name: "Litchi",
+//   score: "10",
+//   review: "Best fruit ever.",
+// });
+
+// litchi.save();
+
+// Person.updateOne(
+//   { name: "Praneet Karna" },
+//   { favouriteFruit: litchi },
+//   function (err) {
+//     if (err) console.log(err);
+//     else console.log("Changed fruit");
+//   }
+// );
+
+//Closing the connection in the last function
+mongoose.connection.close();
